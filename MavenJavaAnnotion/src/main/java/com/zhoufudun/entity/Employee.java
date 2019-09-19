@@ -1,5 +1,9 @@
 package com.zhoufudun.entity;
-
+/**
+ * 
+ * @author 19026404
+ *
+ */
 public class Employee {
 	/**
 	 * 员工id(数据库自增)
