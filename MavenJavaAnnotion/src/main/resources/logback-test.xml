@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true" scanPeriod="30 seconds" >
+	
+	
+	<property name="LOG_HOME" value="${APP_HOME}/logs" />
+	
+	<property name="ENCODER_PATTERN"  
+        value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n" />
+        
+     <!-- 控制台中只有info级别及以上才能输出，其他过滤  -->  
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">   
+	        <level>INFO</level>   
+	        <onMatch>ACCEPT</onMatch>   
+	        <onMismatch>NEUTRAL</onMismatch>   
+        </filter>
+        <encoder>
+            <pattern>${ENCODER_PATTERN}</pattern>
+        </encoder>
+    </appender>
+    
+    <!-- 控制台中只有info级别才能输出，其他过滤    
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">   
+	        <level>INFO</level>   
+	        <onMatch>ACCEPT</onMatch>   
+	        <onMismatch>DENY</onMismatch>   
+        </filter>
+        <encoder>
+            <pattern>${ENCODER_PATTERN}</pattern>
+        </encoder>
+    </appender>   -->  
+    
+    <!--
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+                        过滤掉 TRACE 和 DEBUG 级别的日志，只有大于等于INFO级别的才能输出  
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">   
+        	<level>INFO</level>   
+        </filter>  
+        <encoder>
+            <pattern>${ENCODER_PATTERN}</pattern>
+        </encoder>
+    </appender>  -->  
+    
+    <!--过滤掉所有日志消息中不包含“billing”字符串的日志，需要额外的两个JAR包，commons-compiler.jar和janino.jar
+    <onMatch>:用于配置符合过滤条件的操作
+    <onMismatch>:用于配置不符合过滤条件的操作
+    
+    
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">   
+    <filter class="ch.qos.logback.core.filter.EvaluatorFilter">         
+      <evaluator> 默认为 ch.qos.logback.classic.boolex.JaninoEventEvaluator 
+        <expression>return message.contains("billing");</expression>   
+      </evaluator>   
+      <OnMatch>ACCEPT </OnMatch>  
+      <OnMismatch>DENY</OnMismatch>  
+    </filter>   
+    <encoder>   
+      <pattern>   
+        %-4relative [%thread] %-5level %logger - %msg%n   
+      </pattern>   
+    </encoder>   
+  </appender>    -->  
+  
+    
+    <appender name="FILE_ONE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<append>true</append>
+	    <Encoding>UTF-8</Encoding>
+	    <file>${LOG_HOME}/LogbackTest_ONE.log</file>   
+	    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+		    <!--日志文件输出的文件名-->
+		    <FileNamePattern>${LOG_HOME}/LogbackTest_ONE.%i.log.zip</FileNamePattern> 
+		    <minIndex>1</minIndex>   
+		    <maxIndex>10</maxIndex> 
+	    </rollingPolicy>
+	    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">   
+			<maxFileSize>500MB</maxFileSize>   
+	    </triggeringPolicy>   
+	    <layout class="ch.qos.logback.classic.PatternLayout">  
+	        <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符--> 
+	        <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%-5level] [%logger{36}] [%line-line] [%method-method] - %msg%n   
+	        </pattern>
+	    </layout> 
+	</appender>
+	
+	 <appender name="FILE_TWO"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<append>true</append>
+	    <Encoding>UTF-8</Encoding>
+	    <file>${LOG_HOME}/LogbackTest_TWO.log</file>   
+	    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+		    <!--日志文件输出的文件名-->
+		    <FileNamePattern>${LOG_HOME}/LogbackTest_TWO.%i.log.zip</FileNamePattern> 
+		    <minIndex>1</minIndex>   
+		    <maxIndex>10</maxIndex> 
+	    </rollingPolicy>
+	    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">   
+			<maxFileSize>500MB</maxFileSize>   
+	    </triggeringPolicy>   
+	    <layout class="ch.qos.logback.classic.PatternLayout">  
+	        <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符--> 
+	        <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} %line line - %msg%n   
+	        </pattern>
+	    </layout> 
+	</appender> 
+	   
+	  <!--包 -->   
+	  <logger name="com.zhoufudun.controller" level="DEBUG" additivity="false">  
+	    <appender-ref ref="FILE"/>  
+	  </logger>   
+	  
+	  <!--类  ,,,addtivity:是否向上级loger传递打印信息。默认是true -->  
+	  <!-- 若没有指定日志级别，则继承root的日志级别 --> 
+	  <logger name="com.zhoufudun.service"  additivity="true" level="INFO">  
+	    <appender-ref ref="STDOUT"/>
+	  </logger>  
+	  
+	  <logger name="com.zhoufudun.dao"  additivity="true" level="INFO">  
+	    <appender-ref ref="STDOUT"/>
+	    <appender-ref ref="FILE_TWO"/>    
+	  </logger> 
+	  
+	  <root level="DEBUG">  
+	  	<appender-ref ref="FILE"/>  
+	  </root>     
+
+	
+</configuration>
+
