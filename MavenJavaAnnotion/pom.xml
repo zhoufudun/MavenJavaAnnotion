@@ -276,7 +276,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.0.11</version>
+            <version>1.2.0</version>
         </dependency>  	
 	<!-- logback end -->
 	
