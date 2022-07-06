@@ -126,7 +126,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	<dependency>
 		<groupId>org.apache.shiro</groupId>
 		<artifactId>shiro-core</artifactId>
-		<version>1.2.4</version>
+		<version>1.9.1</version>
 	</dependency>
 	
 	<dependency>
